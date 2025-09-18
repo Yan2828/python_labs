@@ -1,0 +1,15 @@
+Запуск программы(в cmd):
+yanmisis\Scripts\activate
+
+cd Desktop\python_labs\src\lab01
+
+python "название файла".py
+
+
+
+
+
+в треминале(visual studio code)
+git add .    <-- создание гита
+git commit -m "название" 
+git push     <-- сохранение в репозиторий на сайте
