@@ -66,3 +66,202 @@ for i in range(N):
 print('out: ', Tru, Fals)
 ```
 ![Задание6](./images/lab01/06.png)
+
+
+## Лабораторная номер 2
+### Задание 1 (arrays.py)
+#### 1.1
+```python
+def min_max(nums: list[float | int]) -> tuple[float | int, float | int]:
+
+    if len(nums) == 0:
+        return "ValueError"
+
+    minimum = nums[0]
+    maximum = nums[0]
+    
+    for element in nums:
+        if element < minimum:
+            minimum = element
+        if element > maximum:
+            maximum = element
+
+    return(maximum, minimum)
+
+print(min_max([3, -1, 5, 5, 0]))
+print(min_max([42]))
+print(min_max([]))
+print(([1.5, 2, 2.0, -3.1]))
+```
+
+![1.1](./images/lab02/1.1.png)
+#### 1.2
+```python
+def unique_sorted(nums: list[float | int]) -> list[float | int]:
+    s = []
+    for element in nums:
+        if element not in s:
+            s.append(element) # + елемент, если нет в списке
+    
+    s.sort() 
+    return s
+
+print(unique_sorted([3, 1, 2, 1, 3]))
+print(unique_sorted([]))
+print(unique_sorted([-1, -1, 0, 2, 2]))
+print(unique_sorted([1.0, 1, 2.5, 2.5, 0]))
+```
+
+![1.2](./images/lab02/1.2.png)
+#### 1.3
+```python
+def flatten(mat: list[list | tuple]) -> list:
+    d = []
+    for i, row in enumerate(mat):
+        if not (isinstance(row, list) or isinstance(row, tuple)): # Список или кортеж
+            if isinstance(row, str):
+                return "TypeError"
+            else:
+                return "TypeError"
+        # Проходим по элементам строки и просто добавляем их в result
+        for elem in row:
+            d.append(elem)
+    
+    return d
+
+print(flatten([[1, 2], [3, 4]]))
+print(flatten([[1, 2], (3, 4, 5)]))
+print(flatten([[1], [], [2, 3]]))
+print(flatten([[1, 2], "ab"]))
+```
+![1.3](./images/lab02/1.3.png)
+
+### 2.1
+```python
+def transpose(mat: list[list[float | int]]) -> list[list]:
+    if not mat:
+        return []
+    row_length = len(mat[0])
+    for row in mat:
+        if len(row) != row_length:
+            return "ValueError"
+    result = []
+    for col_idx in range(row_length):
+        new_row = []
+        for row_idx in range(len(mat)):
+            new_row.append(mat[row_idx][col_idx])
+        result.append(new_row)
+    return result
+
+
+print(transpose([[1, 2, 3]]))
+print(transpose([[1], [2], [3]]))
+print(transpose([[1, 2], [3, 4]]))
+print(transpose([]))
+print(transpose([[1, 2], [3]]))
+```
+
+![2.1](./images/lab02/2.1.png)
+### 2.2
+```python
+def row_sums(mat: list[list[float | int]]) -> list[float]:
+    if not mat:
+        return []
+    row_length = len(mat[0])
+    for row in mat:
+        if len(row) != row_length:
+            return "ValueError"
+    result = []
+    for row in mat:
+        total = 0
+        for val in row:
+            total += val
+        result.append(total)
+    return result
+
+print(row_sums([[1, 2, 3], [4, 5, 6]]))
+print(row_sums([[-1, 1], [10, -10]]))
+print(row_sums([[0, 0], [0, 0]]))
+print(row_sums([[1, 2], [3]]))
+```
+
+![2.2](./images/lab02/2.2.png)
+### 2.3
+
+```python
+def col_sums(mat: list[list[float | int]]) -> list[float]:
+    if not mat:
+        return []
+    row_length = len(mat[0])
+    for row in mat:
+        if len(row) != row_length:
+            return "ValueError"
+    result = []
+    for col_idx in range(row_length):
+        total = 0
+        for row_idx in range(len(mat)):
+            total += mat[row_idx][col_idx]
+        result.append(total)
+    return result
+
+print(col_sums([[1, 2, 3], [4, 5, 6]]))
+print(col_sums([[-1, 1], [10, -10]]))
+print(col_sums([[0, 0], [0, 0]]))
+print(col_sums([[1, 2], [3]]))
+```
+
+![2.3](./images/lab02/2.3.png)
+### Задание 3 (tuples.py)
+```python
+def format_record(rec: tuple[str, str, float]) -> str:
+    fio, group, gpa = rec
+
+    if not isinstance(fio, str):
+        return ValueError("ФИО должно быть строкой")
+    if not isinstance(group, str):
+        return ValueError("Группа должна быть строкой")
+    if not isinstance(gpa, (float, int)):
+        return ValueError("GPA должно быть числом")
+
+    fio = ' '.join(fio.strip().split())
+    group = group.strip()
+
+    if not fio:
+        return "ValueError"
+    if not group:
+        return "ValueError"
+    
+    gpa = float(gpa)
+
+    parts = fio.split()
+    if len(parts) < 1:
+        return "ValueError"
+    surname = parts[0]
+
+    inizial = ''
+
+    if len(parts) >= 2:
+        inizial += parts[1][0].upper() + '.'
+
+    if len(parts) >= 3:
+        inizial += parts[2][0].upper() + '.'
+        
+    if len(parts) == 1:
+        inizial = ''
+    
+    if inizial:
+        full_name = f"{surname} {inizial}"
+    else:
+        full_name = surname
+
+    gpa_str = f"{gpa:.2f}"
+
+    return f"{full_name}, гр. {group}, GPA {gpa_str}"
+
+print(format_record(("Иванов Иван Иванович", "BIVT-25", 4.6)))
+print(format_record(("Петров Пётр", "IKBO-12", 5.0)))
+print(format_record(("Петров Пётр Петрович", "IKBO-12", 5.0)))
+print(format_record(("  сидорова  анна   сергеевна ", "ABB-01", 3.999)))
+print(format_record(("", "ABB-01", 3.999)))
+```
+![3](./images/lab02/3.png)

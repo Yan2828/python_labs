@@ -14,11 +14,11 @@ def transpose(mat: list[list[float | int]]) -> list[list]:
     return result
 
 
-# print(transpose([[1, 2, 3]]))
-# print(transpose([[1], [2], [3]]))
-# print(transpose([[1, 2], [3, 4]]))
-# print(transpose([]))
-# print(transpose([[1, 2], [3]]))
+print(transpose([[1, 2, 3]]))
+print(transpose([[1], [2], [3]]))
+print(transpose([[1, 2], [3, 4]]))
+print(transpose([]))
+print(transpose([[1, 2], [3]]))
 
 
 def row_sums(mat: list[list[float | int]]) -> list[float]:
@@ -36,10 +36,10 @@ def row_sums(mat: list[list[float | int]]) -> list[float]:
         result.append(total)
     return result
 
-# print(row_sums([[1, 2, 3], [4, 5, 6]]))
-# print(row_sums([[-1, 1], [10, -10]]))
-# print(row_sums([[0, 0], [0, 0]]))
-# print(row_sums([[1, 2], [3]]))
+print(row_sums([[1, 2, 3], [4, 5, 6]]))
+print(row_sums([[-1, 1], [10, -10]]))
+print(row_sums([[0, 0], [0, 0]]))
+print(row_sums([[1, 2], [3]]))
 
 
 def col_sums(mat: list[list[float | int]]) -> list[float]:
