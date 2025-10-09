@@ -9,7 +9,13 @@ python "название файла".py
 
 
 
-в треминале(visual studio code)
+в терминале(visual studio code)
 git add .    <-- создание гита
 git commit -m "название" 
 git push     <-- сохранение в репозиторий на сайте
+
+
+list.sort() - сортирует на месте 
+sorted(list) - создает новыйотсортированный список
+min, max - быстрый поиск
+in, index - проверка поиска
