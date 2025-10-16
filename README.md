@@ -265,3 +265,91 @@ print(format_record(("  сидорова  анна   сергеевна ", "ABB-
 print(format_record(("", "ABB-01", 3.999)))
 ```
 ![3](./images/lab02/3.png)
+
+
+
+## Лабораторная номер 3
+### Задание 1 (text.py)
+#### 1.1
+```python
+def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
+    if text is None:
+        raise ValueError
+    if not isinstance(text, str):
+        raise TypeError
+    if len(text) == 0:
+        return ""  
+    if yo2e:
+        text = text.replace('Ё', 'Е').replace('ё', 'е')
+    if casefold:
+        text = ' '.join(text.strip().split())
+    return text
+```
+
+![1.1](./images/lab03/1.1.png)
+#### 1.2
+```python
+import re
+def tokenize(text: str) -> list[str]:
+    return re.findall(r"\w+(?:-\w+)*", text)
+```
+
+![1.2](./images/lab03/1.2.png)
+#### 1.3
+```python
+def count_freq(tokens: list[str]) -> dict[str, int]:
+    if not tokens:
+        return {}
+    freq_dict = {}
+    for token in tokens:
+        freq_dict[token] = freq_dict.get(token, 0) + 1
+    return freq_dict
+```
+
+![1.3](./images/lab03/1.3.png)
+#### 1.4
+```python
+def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
+    element = list(freq.items())
+    element.sort(key = lambda i: (-i[1],i[0]))
+    return element
+```
+
+![1.4](./images/lab03/1.4.png)
+
+### Задание 2 (text_starts.py)
+```python
+import sys
+from pathlib import Path
+
+lib_path = Path(__file__).parent.parent / 'lib'
+sys.path.insert(0, str(lib_path))
+
+from text import tokenize, normalize, count_freq, top_n
+
+
+def read_stdin() -> str:
+    return sys.stdin.read()
+
+
+def stats(colvo_slov: int, unik_slova: int, top_items):
+    print(f'Всего слов: {colvo_slov}')
+    print(f'Уникальных слов: {unik_slova}')
+    print('Топ-5:')
+    for wordy, count in top_items:
+        print(f'{wordy}:{count}')
+
+
+def main():
+    text = read_stdin()
+    normalized = normalize(text)
+    tokens = tokenize(normalized)
+    freq_map = count_freq(tokens)
+    top = top_n(freq_map, 5)
+    stats(len(tokens), len(set(tokens)), top)
+
+
+if __name__ == '__main__':
+    main()
+```
+![2](./images/lab03/2.png)
