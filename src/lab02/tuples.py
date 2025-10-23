@@ -1,5 +1,10 @@
 def format_record(rec: tuple[str, str, float]) -> str:
     fio, group, gpa = rec
+    
+    if isinstance(rec, tuple) == False: return "TypeError"
+
+    if len(rec) != 3:
+        return "ValueError"
 
     if not isinstance(fio, str):
         return ValueError("ФИО должно быть строкой")

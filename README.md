@@ -353,3 +353,85 @@ if __name__ == '__main__':
     main()
 ```
 ![2](./images/lab03/2.png)
+
+
+## Лабораторная номер 4
+### Задание 1 (io_txt_csv.py)
+#### 1
+```python
+import csv
+from pathlib import Path
+from typing import Iterable, Sequence
+
+def read_text(path: str | Path, encoding: str = "utf-8") -> str:
+
+    p = Path(path) 
+    return p.read_text(encoding=encoding)
+
+
+def write_csv(rows: Iterable[Sequence], path: str | Path,
+    header: tuple[str, ...] | None = None) -> None:
+    p = Path(path)
+    rows = list(rows)
+    if rows:
+        s = len(rows[0])
+        for element in rows:
+            if s != len(element):
+                raise ValueError("Все строки должны иметь одинаковую длину")
+
+    with p.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        if header is not None:
+            w.writerow(header)
+        for r in rows:
+            w.writerow(r)
+```
+![1](./images/lab04/1.png)
+
+### Задание 2 (text_report.py)
+```python
+from src.lab04.io_txt_csv import read_text, write_csv
+from lib.text import normalize, tokenize, count_freq, top_n 
+import sys
+
+def main(input_path: str = "data/input.txt", output_path: str = "data/report.csv", encoding: str = "utf-8"):
+
+    try:
+        text = read_text(input_path, encoding=encoding)
+    except FileNotFoundError:
+        print(f"Файл не найден")
+        sys.exit(1)
+    except UnicodeDecodeError:
+        print("Неправильная кодировка файла")
+        sys.exit(1)
+    '''
+Означает принудительное завершение программы, передает системе
+код завершения 1 ( 0 - успешное завершение, 1 или любое другое значение - завершилось с ошибкой)
+'''
+    tokens = tokenize(normalize(text))
+    freq = count_freq(tokens)
+    sorted_freq = top_n(freq)
+
+    rows = sorted_freq
+    header = ("word", "count")
+    if rows:
+        write_csv(rows, output_path, header=header)
+    else:
+        write_csv([], output_path, header=header)
+
+    total_words = sum(freq.values())
+    unique_words = len(freq)
+    top_5 = sorted_freq[:5]
+
+    print(f"Всего слов: {total_words}")
+    print(f"Уникальных слов: {unique_words}")
+    print("Топ-5 слов:")
+    for word, count in top_5:
+        print(f"{word}: {count}")
+
+if __name__ == "main":
+    main()
+```
+![2](./images/lab04/2.png)
+![3](./images/lab04/3.png)
+![4](./images/lab04/4.png)
