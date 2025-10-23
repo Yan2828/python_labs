@@ -44,9 +44,9 @@ def count_freq(tokens: list[str]) -> dict[str, int]:
 # print(count_freq(["bb","aa","bb","aa","cc"]))
 
 def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
-    res = list(freq.items())
-    res.sort(key = lambda i: (-i[1],i[0]))
-    return res
+    element = list(freq.items())
+    element.sort(key = lambda i: (-i[1],i[0]))
+    return element
 
 # print(top_n(count_freq(["a","b","a","c","b","a"])))
 # print(top_n(count_freq(["bb","aa","bb","aa","cc"])))
