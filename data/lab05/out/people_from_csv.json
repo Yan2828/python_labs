@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Alice",
+    "age": "22",
+    "city": "Moscow",
+    "profession": "Accountan"
+  },
+  {
+    "name": "Bob",
+    "age": "25",
+    "city": "USA",
+    "profession": "Builder"
+  },
+  {
+    "name": "Peter",
+    "age": "19",
+    "city": "Charlie",
+    "profession": "Cook"
+  }
+]

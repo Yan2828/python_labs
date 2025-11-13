@@ -435,3 +435,158 @@ if __name__ == "main":
 ![2](./images/lab04/2.png)
 ![3](./images/lab04/3.png)
 ![4](./images/lab04/4.png)
+
+## Лабороторная работа 5
+### Задание 1 (json_csv.py)
+```python 
+
+import json
+import csv
+from pathlib import Path
+
+
+def json_to_csv(json_path: str, csv_path: str) -> None:
+    """
+    Преобразует JSON-файл в CSV.
+    Поддерживает список словарей [{...}, {...}], заполняет отсутствующие поля пустыми строками.
+    Кодировка UTF-8. Порядок колонок — как в первом объекте или алфавитный (указать в README).
+    """
+    json_file = Path(json_path)
+    if not json_file.exists():
+        raise FileNotFoundError
+    
+    if json_file.suffix.lower() != '.json':
+        raise ValueError
+    
+    try:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except json.JSONDecodeError as e:
+        raise ValueError
+
+    if not isinstance(data, list):
+        raise ValueError
+    if len(data) == 0:
+        raise ValueError
+    if not isinstance(data[0], dict):
+        raise ValueError
+    
+    all_keys = set()
+    for item in data:
+        all_keys.update(item.keys())
+    fieldnames = list(all_keys)
+
+    try:
+        with open(csv_path, 'w', newline='', encoding='utf-8') as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+            writer.writeheader()
+            for row in data:
+                row_complete = {key: row.get(key, '') for key in fieldnames}
+                writer.writerow(row_complete)
+    except IOError as e:
+        raise IOError(f"Ошибка формата {e}") 
+        
+json_to_csv('data/lab05/samples/people.json', 'data/lab05/out/people_from_json.csv')
+
+
+def csv_to_json(csv_path: str, json_path: str) -> None:
+    """
+    Преобразует CSV в JSON (список словарей).
+    Заголовок обязателен, значения сохраняются как строки.
+    json.dump(..., ensure_ascii=False, indent=2)
+    """
+    csv_file = Path(csv_path)
+    if not csv_file.exists():
+        raise FileNotFoundError
+
+    if csv_file.suffix.lower() != '.csv':
+        raise ValueError
+    
+    try:
+        with open(csv_path, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            
+            if reader.fieldnames is None:
+                raise ValueError
+            
+            data = list(reader)
+            
+    except Exception as e:
+        raise ValueError
+    
+    if not data:
+        raise ValueError
+    
+    try:
+        with open(json_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+            
+    except Exception as e:
+        raise ValueError(f"Ошибка записи JSON файла: {e}")
+
+csv_to_json('data/lab05/samples/people.csv', 'data/lab05/out/people_from_csv.json')
+```
+![1](./images/lab05/01.png)
+![2](./images/lab05/2.png)
+![3](./images/lab05/03.png)
+![4](./images/lab05/4.png)
+
+### Задание 2 (csv_xlsx.py)
+```python
+from openpyxl import Workbook
+import csv
+
+def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
+    """
+    Конвертирует CSV в XLSX.
+    Использовать openpyxl ИЛИ xlsxwriter.
+    Первая строка CSV — заголовок.
+    Лист называется "Sheet1".
+    Колонки — автоширина по длине текста (не менее 8 символов).
+    """
+    new_file = Workbook()
+    listt = new_file.active
+    listt.title = "1"
+    
+    with open(csv_path, encoding="utf-8") as f:
+        for row in csv.reader(f):
+                listt.append(row)
+        for column in listt.columns:
+            mx = 0
+            column_letter = column[0].column_letter
+            for cell in column:
+                mx = max(mx, len(cell.value))
+            new_width = max(mx + 2, 8)
+            listt.column_dimensions[column_letter].width = new_width
+    
+    new_file.save(xlsx_path)
+from openpyxl import Workbook
+import csv
+
+def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
+    """
+    Конвертирует CSV в XLSX.
+    Использовать openpyxl ИЛИ xlsxwriter.
+    Первая строка CSV — заголовок.
+    Лист называется "Sheet1".
+    Колонки — автоширина по длине текста (не менее 8 символов).
+    """
+    new_file = Workbook()
+    listt = new_file.active
+    listt.title = "1"
+    
+    with open(csv_path, encoding="utf-8") as f:
+        for row in csv.reader(f):
+                listt.append(row)
+        for column in listt.columns:
+            mx = 0
+            column_letter = column[0].column_letter
+            for cell in column:
+                mx = max(mx, len(cell.value))
+            new_width = max(mx + 2, 8)
+            listt.column_dimensions[column_letter].width = new_width
+    
+    new_file.save(xlsx_path)
+csv_to_xlsx('data/lab05/samples/people.csv', 'data/lab05/out/people.xlsx')
+```
+![5](./images/lab05/05.png)  

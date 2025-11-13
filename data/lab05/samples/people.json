@@ -1,0 +1,23 @@
+[
+  {
+    "age": "25",
+    "country": "Rassian",
+    "city": "Moscow",
+    "name": "Alice",
+    "email": "Alica777@gmail.com"
+  },
+  {
+    "age": "30",
+    "country": "USA",
+    "city": "Washington",
+    "name": "Bob",
+    "email": "BobNob@example.com"
+  },
+  {
+    "age": "22",
+    "country": "England",
+    "city": "London",
+    "name": "Charlie",
+    "email": "charlie@example.com"
+  }
+]
