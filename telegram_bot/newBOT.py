@@ -4,6 +4,29 @@ from telebot import types # -> разрешение отправки разно�
 
 bot = telebot.TeleBot('8181403411:AAEKQIqEyiob0ZEzNP0_tmZ-y11bObUb5AQ')
 
+@bot.message_handler(commands=['start'])
+def start(message):
+    s = types.ReplyKeyboardMarkup() # метод для кнопок в меню
+    f1 = types.KeyboardButton('Перейти на сайт погоды', url = 'https://yandex.ru/pogoda/ru/moscow?lat=55.559898&lon=37.583839') # KeyboardButton -> виды кнопок в меню
+    s.row(f1) 
+    f2 = types.KeyboardButton('удалить фото') # callback_data - не уместен 
+    f3 = types.KeyboardButton('изменить текст')
+    s.row(f2, f3) # row() -> сколько кнопак в ряд (add -> добавить по умолчанию)
+    file = open('./video.MP4', 'rb')
+    bot.send_video(message.chat.id, file, reply_markup=s) # ответ на сообщение start
+    '''
+    send_photo
+    send_audio
+    '''
+    # bot.send_message(message.chat.id, 'Привет, красавчик', reply_markup=s) # ответ на сообщение start
+    bot.register_next_step_handler(message, on_click) # обработка команд (следущия функция, которая будет работать)
+
+def on_click(message):
+    if message.text.lower() == 'перейти на сайт погоды': # обработка текста 
+        bot.send_message(message.chat.id, 'website is open')
+    elif message.text.lower() == 'удалить фото': # обработка текста 
+        bot.send_message(message.chat.id, 'delete')
+
 @bot.message_handler(content_types=['photo'])
 def get_photo(message):
     s = types.InlineKeyboardMarkup()

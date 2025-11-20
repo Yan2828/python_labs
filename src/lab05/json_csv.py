@@ -31,8 +31,14 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
         raise ValueError("JSON должен содержать список объектов")
     if len(data) == 0:
         raise ValueError("JSON-файл пуст")
-    if not isinstance(data[0], dict):
-        raise ValueError("Элементы списка должны быть словарями")
+    
+    i = 0
+    while i < len(data):
+        item = data[i]
+        if not isinstance(item, dict):
+            raise ValueError
+    
+
     
     # Собираем все уникальные ключи из всех объектов
     all_keys = set()

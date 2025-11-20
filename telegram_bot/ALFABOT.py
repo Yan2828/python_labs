@@ -7,11 +7,36 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 # Ваш токен бота
 BOT_TOKEN = "8491914338:AAEivzx8CzgFbbfiqfir_hbVaX9ngXEj95A"
+# Ваш API ключ
+API_KEY = "CejJOLyYsWklIELGE640QKooPZUwOkPa"
 
 # Initialize bot and dispatcher
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 router = Router()
+
+class APIHandler:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        self.base_url = "https://api.example.com"  # Замените на реальный URL API
+    
+    async def make_request(self, endpoint: str, data: dict = None):
+        """
+        Базовый метод для выполнения API запросов
+        """
+        # Здесь будет реализация запросов к API
+        # Пример с aiohttp:
+        # async with aiohttp.ClientSession() as session:
+        #     headers = {'Authorization': f'Bearer {self.api_key}'}
+        #     async with session.post(f"{self.base_url}/{endpoint}", 
+        #                           headers=headers, json=data) as response:
+        #         return await response.json()
+        
+        # Временная заглушка
+        return {"status": "success", "message": "API integration pending"}
+
+# Инициализация обработчика API
+api_handler = APIHandler(API_KEY)
 
 @router.message(Command("start"))
 async def cmd_start(message: types.Message):
@@ -50,10 +75,20 @@ async def cmd_help(message: types.Message):
 /finance - Финансовые вопросы
 /legal - Юридические консультации
 /marketing - Помощь с маркетингом
+/api_test - Тест API подключения
 
 💡 **Используйте кнопки меню** для быстрого доступа к функциям!
     """
     await message.answer(help_text)
+
+@router.message(Command("api_test"))
+async def api_test(message: types.Message):
+    """Тестовая команда для проверки API"""
+    try:
+        result = await api_handler.make_request("test")
+        await message.answer(f"✅ API тест успешен!\nРезультат: {result}")
+    except Exception as e:
+        await message.answer(f"❌ Ошибка API: {str(e)}")
 
 # Обработчики для кнопок
 @router.message(lambda message: message.text == "💼 Финансы")
@@ -153,12 +188,14 @@ async def echo(message: types.Message):
 Используйте меню для выбора категории помощи или команды:
 /start - главное меню
 /help - справка по командам
+/api_test - тест API подключения
 """
     await message.answer(response)
 
 async def main():
     logging.basicConfig(level=logging.INFO)
     print("🤖 Бот запускается...")
+    print(f"🔑 API ключ: {API_KEY}")
     
     dp.include_router(router)
     
