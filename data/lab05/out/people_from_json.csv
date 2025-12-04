@@ -1,4 +1,4 @@
-name,email,country,age,city
-Alice,Alica777@gmail.com,Rassian,25,Moscow
-Bob,BobNob@example.com,USA,30,Washington
-Charlie,,England,22,London
+email,city,name,country,age
+Alica777@gmail.com,Moscow,Bob,Rassian,25
+BobNob@example.com,Washington,Bob,USA,30
+charlie@example.com,London,Charlie,England,22

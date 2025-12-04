@@ -58,7 +58,7 @@ def main():
     subparsers = parser.add_subparsers(dest='command', required=True)
 
     cat_parser = subparsers.add_parser('cat', help='Вывести содержимое файла')
-    cat_parser.add_argument('--input', required=True, help='Входной файл')
+    cat_parser.add_argument('-i','--input', required=True, help='Входной файл')
     cat_parser.add_argument('-n', action='store_true', help='Нумеровать строки')
 
     stats_parser = subparsers.add_parser('stats', help='Частоты слов в тексте')
